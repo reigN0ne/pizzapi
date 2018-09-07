@@ -2,13 +2,15 @@ pizza.py
 =======
 The all-in-one Dominos Pizza API Wrapper for Python.
 
-.. image:: https://img.shields.io/badge/Python-3.x-blue.svg   :alt: Python
+.. image:: https://img.shields.io/badge/Python-3.x-blue.svg
 
 
 Disclaimer
 -----------
-This is my fork of `PizzAPI <https://github.com/gamagori/pizzapi>`_
-It's heavily modified and not well documented.
+This is my fork of `PizzAPI <https://github.com/gamagori/pizzapi>`_.
+
+It's heavily modified and therefore not well documented.
+
 This version is all contained within one Python file called ``pizza.py``.
 
 
