@@ -7,9 +7,9 @@ The all-in-one Dominos Pizza API Wrapper for Python.
 
 Disclaimer
 -----------
-This is my fork of `PizzAPI<https://github.com/gamagori/pizzapi>`
+This is my fork of `PizzAPI <https://github.com/gamagori/pizzapi>`_
 It's heavily modified and not well documented.
-This version is all contained within one Python file called ``pizza.py``
+This version is all contained within one Python file called ``pizza.py``.
 
 
 Setup
@@ -30,7 +30,7 @@ Description
 
 This is a Python wrapper for the Dominos Pizza API. It currently only works in the US and Canada, but other regions may be added in the future. If not, you could always fork the repository and add custom regions yourself.
 
-It's a port of `the pizzapi node.js module <https://github.com/RIAEvangelist/node-dominos-pizza-api>`_ written by `RIAEvangelist <https://github.com/RIAEvangelist>`_.
+Pizza.py a port of `the pizzapi node.js module <https://github.com/RIAEvangelist/node-dominos-pizza-api>`_ written by `RIAEvangelist <https://github.com/RIAEvangelist>`_.
 
 Quick Start
 -----------
