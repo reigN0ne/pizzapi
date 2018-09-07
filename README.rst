@@ -1,32 +1,40 @@
-pizzapy
+pizza.py
 =======
+The all-in-one Dominos Pizza API Wrapper for Python.
+.. image:: https://img.shields.io/badge/Python-3.x-blue.svg   :alt: Python
+
 
 Disclaimer
 -----------
-This is my fork of https://github.com/gamagori/pizzapi
-It's heavily modified and not well documented, but i'm going to get to that. the below example should work though.
+This is my fork of (https://github.com/gamagori/pizzapi)[PizzAPI].
+It's heavily modified and not well documented.
+This version is all contained within one Python file called ``pizza.py``
 
-sorry! was kind of in a rush this morning.
 
 Setup
 -----
 
-1. install python3
-2. download this repository
-3. install the requirements of the repository `pip install -r requirements.txt`
-4. start a python3 interpreter inside of the folder called pizzapy
-5. have fun
+1. Install Python 3.x
+2. Clone or download this repository
+3. Install the requirements of the repository via ``pip install -r requirements.txt``
+4. Start a Python 3.x interpreter in the folder where `pizza.py` is located
+5. Import the module with the command below: 
+
+.. code-block:: python
+	from pizza import *
 
 
 Description
 -----------
 
-This is a Python wrapper for the Dominos Pizza API.
+This is a Python wrapper for the Dominos Pizza API. It currently only works in the US and Canada, but other regions may be added in the future. If not, you could always fork the repository and add custom regions yourself.
 
 It's a port of `the pizzapi node.js module <https://github.com/RIAEvangelist/node-dominos-pizza-api>`_ written by `RIAEvangelist <https://github.com/RIAEvangelist>`_.
 
 Quick Start
 -----------
+
+Before you do anything, make sure you have imported the module with the command shown in the steps above.
 
 First construct a ``Customer`` object and set the customer's address:
 
