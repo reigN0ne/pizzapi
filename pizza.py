@@ -7,6 +7,7 @@ import requests
 import xmltodict
 import pytest
 import mock
+import re
 
 # TODO: Add more countries
 COUNTRY_USA = 'us'
