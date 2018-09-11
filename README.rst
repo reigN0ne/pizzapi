@@ -24,6 +24,7 @@ Setup
 5. Import the module with the command below: 
 
 .. code-block:: python
+
 	from pizza import *
 
 
