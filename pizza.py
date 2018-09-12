@@ -1,22 +1,26 @@
 # Pizza.py
-# Written by iCrazyBlaze, original fork by Jarvis Johnson
+# Written by iCrazyBlaze, original fork by Jarvis Johnson (MagicJarvis)
 # Original API by Gamagori and RIAEvangelist
-# Last updated 7/9/2018
+# Last updated 12/09/2018
 
 import requests
 import xmltodict
-import pytest
-import mock
 import re
 
-# TODO: Add more countries
+COUNTRY = COUNTRY_USA
+
+# TODO: Add more countries/regions
 COUNTRY_USA = 'us'
 COUNTRY_CANADA = 'ca'
+COUNTRY_UK = 'uk'
+COUNTRY_INDIA = 'in'
+COUNTRY_JAPAN = 'jp'
 
 
 # TODO: Find out why this occasionally hangs
 # TODO: Can we wrap this up, so the callers don't have to worry about the 
-    # complexity of two types of requests? 
+# complexity of two types of requests? 
+
 def request_json(url, **kwargs):
     """Send a GET request to one of the API endpoints that returns JSON.
 
@@ -50,7 +54,7 @@ class Order(object):
     up all the logic for actually placing the order, after we've
     determined what we want from the Menu. 
     """
-    def __init__(self, store, customer, country=COUNTRY_USA):
+    def __init__(self, store, customer, country=COUNTRY):
         self.store = store
         self.menu = Menu.from_store(store_id=store.id, country=country)
         self.customer = customer
@@ -74,7 +78,7 @@ class Order(object):
             }
 
     @staticmethod
-    def begin_customer_order(customer, store, country=COUNTRY_USA):
+    def begin_customer_order(customer, store, country=COUNTRY):
         return Order(store, customer, country=country)
 
     def __repr__(self):
@@ -194,7 +198,7 @@ class Address(object):
         country (String): Country
     """
 
-    def __init__(self, street, city, region='', zip='', country=COUNTRY_USA, *args):
+    def __init__(self, street, city, region='', zip='', country=COUNTRY, *args):
         self.street = street.strip()
         self.city = city.strip()
         self.region = region.strip()
@@ -252,7 +256,9 @@ class Coupon(object):
 
 
 class Customer:
-    """The Customer who orders a pizza."""
+    """The Customer who orders a pizza.
+	
+	This is the class where the customer's info is stored."""
 
     def __init__(self, fname='', lname='', email='', phone='', address=None):
         self.first_name = fname.strip()
@@ -305,11 +311,11 @@ class Menu(object):
     Next time I get pizza, there is a lot of work to be done in 
     documenting this class.
     """
-    def __init__(self, data={}, country=COUNTRY_USA):
+    def __init__(self, data={}, country=COUNTRY):
         self.variants = data.get('Variants', {})
         self.menu_by_code = {}
         self.root_categories = {}
-        self.country = COUNTRY_USA
+        self.country = COUNTRY
 
         if self.variants:
             self.products = self.parse_items(data['Products'])
@@ -319,7 +325,7 @@ class Menu(object):
                 self.root_categories[key] = self.build_categories(value)
 
     @classmethod
-    def from_store(cls, store_id, lang='en', country=COUNTRY_USA):
+    def from_store(cls, store_id, lang='en', country=COUNTRY):
         response = request_json(Urls(country).menu_url(), store_id=store_id, lang=lang)
         menu = cls(response)
         return menu
@@ -425,7 +431,7 @@ class Store(object):
     You can use this to find store information about stores near an
     address, or to find the closest store to an address. 
     """
-    def __init__(self, data={}, country=COUNTRY_USA):
+    def __init__(self, data={}, country=COUNTRY):
         self.id = str(data.get('StoreID', -1))
         self.country = country
         self.urls = Urls(country)
@@ -479,7 +485,7 @@ class StoreLocator(object):
 
 
 
-def track_by_phone(phone, country=COUNTRY_USA):
+def track_by_phone(phone, country=COUNTRY):
     """Query the API to get tracking information.
 
     Not quite sure what this gets you - problem to solve for next time I get pizza. 
@@ -495,7 +501,7 @@ def track_by_phone(phone, country=COUNTRY_USA):
     return response
 
 
-def track_by_order(store_id, order_key, country=COUNTRY_USA):
+def track_by_order(store_id, order_key, country=COUNTRY):
     """Query the API to get tracking information.
     """
     return request_json(
@@ -512,9 +518,9 @@ class Urls(object):
     This initializes some dicts that contain country-unique information
     on how to interact with the API, and some getter methods for getting
     to that information. These are handy to pass as a first argument to
-    pizzapy.utils.request_[xml|json]. 
+    pizza.utils.request_[xml|json].
     """
-    def __init__(self, country=COUNTRY_USA):
+    def __init__(self, country=COUNTRY):
 
         self.country = country
         self.urls = {
@@ -539,7 +545,40 @@ class Urls(object):
                 'track_by_phone' : 'https://trkweb.dominos.ca/orderstorage/GetTrackerData?Phone={phone}',
                 'validate_url' : 'https://order.dominos.ca/power/validate-order',
                 'coupon_url' : 'https://order.dominos.ca/power/store/{store_id}/coupon/{couponid}?lang={lang}',
-            }
+            },
+			COUNTRY_UK: {
+				'find_url' : 'https://order.dominos.co.uk/power/store-locator?s={line1}&c={line2}&type={type}',
+				'info_url' : 'https://order.dominos.co.uk/power/store/{store_id}/profile',
+				'menu_url' : 'https://order.dominos.co.uk/power/store/{store_id}/menu?lang={lang}&structured=true',
+				'place_url' : 'https://order.dominos.co.uk/power/place-order',
+				'price_url' : 'https://order.dominos.co.uk/power/price-order',
+				'track_by_order' : 'https://trkweb.dominos.co.uk/orderstorage/GetTrackerData?StoreID={store_id}&OrderKey={order_key}',
+				'track_by_phone' : 'https://trkweb.dominos.co.uk/orderstorage/GetTrackerData?Phone={phone}',
+				'validate_url' : 'https://order.dominos.co.uk/power/validate-order',
+				'coupon_url' : 'https://order.dominos.co.uk/power/store/{store_id}/coupon/{couponid}?lang={lang}',
+			},
+			COUNTRY_INDIA: {
+				'find_url' : 'https://order.dominos.co.in/power/store-locator?s={line1}&c={line2}&type={type}',
+				'info_url' : 'https://order.dominos.co.in/power/store/{store_id}/profile',
+				'menu_url' : 'https://order.dominos.co.in/power/store/{store_id}/menu?lang={lang}&structured=true',
+				'place_url' : 'https://order.dominos.co.in/power/place-order',
+				'price_url' : 'https://order.dominos.co.in/power/price-order',
+				'track_by_order' : 'https://trkweb.dominos.co.in/orderstorage/GetTrackerData?StoreID={store_id}&OrderKey={order_key}',
+				'track_by_phone' : 'https://trkweb.dominos.co.in/orderstorage/GetTrackerData?Phone={phone}',
+				'validate_url' : 'https://order.dominos.co.in/power/validate-order',
+				'coupon_url' : 'https://order.dominos.co.in/power/store/{store_id}/coupon/{couponid}?lang={lang}',
+				
+					},
+			COUNTRY_JAPAN: {
+				'find_url' : 'https://order.dominos.co.jp/power/store-locator?s={line1}&c={line2}&type={type}',
+				'info_url' : 'https://order.dominos.co.jp/power/store/{store_id}/profile',
+				'menu_url' : 'https://order.dominos.co.jp/power/store/{store_id}/menu?lang={lang}&structured=true',
+				'place_url' : 'https://order.dominos.co.jp/power/place-order',
+				'price_url' : 'https://order.dominos.co.jp/power/price-order',
+				'track_by_order' : 'https://trkweb.dominos.co.jp/orderstorage/GetTrackerData?StoreID={store_id}&OrderKey={order_key}',
+				'track_by_phone' : 'https://trkweb.dominos.co.jp/orderstorage/GetTrackerData?Phone={phone}',
+				'validate_url' : 'https://order.dominos.co.jp/power/validate-order',
+				'coupon_url' : 'https://order.dominos.co.jp/power/store/{store_id}/coupon/{couponid}?lang={lang}',
         }
     
     def find_url(self):
@@ -571,6 +610,4 @@ class Urls(object):
     
     
 if __name__ == "__main__":
-    exit("This script should not be run directly. Use 'from pizza import *' to import and use the API in Python 3.")
-
-					 
+    exit("This script should not be run directly. Use 'from pizza import *' to import and use the API in a Python 3.x interpreter.")

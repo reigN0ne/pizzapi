@@ -1,8 +1,9 @@
 pizza.py
-=======
+========
 The all-in-one Dominos Pizza API Wrapper for Python.
 
 .. image:: https://img.shields.io/badge/Python-3.x-blue.svg
+.. image:: https://img.shields.io/badge/Version-1.2-yellow.svg
 
 
 Disclaimer
@@ -20,7 +21,7 @@ Setup
 1. Install Python 3.x
 2. Clone or download this repository
 3. Install the requirements of the repository via ``pip install -r requirements.txt``
-4. Start a Python 3.x interpreter in the folder where `pizza.py` is located
+4. Start a Python 3.x interpreter in the folder where ``pizza.py`` is located
 5. Import the module with the command below: 
 
 .. code-block:: python
@@ -39,6 +40,23 @@ Quick Start
 -----------
 
 Before you do anything, make sure you have imported the module with the command shown in the steps above.
+
+Now you can set your country. You can do this with:
+
+>>> COUNTRY = COUNTRY_UK
+
+Replace ``COUNTRY_UK`` with one of the following:
+
+- COUNTRY_USA
+- COUNTRY_CANADA
+- COUNTRY_JAPAN
+- COUNTRY_INDIA
+- COUNTRY_UK
+
+By default, this is set to ``COUNTRY_USA``.
+
+Using the API
+-------------
 
 First construct a ``Customer`` object and set the customer's address:
 

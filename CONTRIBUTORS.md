@@ -1,11 +1,17 @@
-# pizzapi Contributors
+# pizza.py Contributors
+
+## Maintainers
+
+### [iCrazyBlaze](https://github.com/iCrazyBlaze)
+###### Current Maintainer
 
 ## Maintainers
 
 ### [Grant Gordon](https://github.com/gamagori)
-###### Current Maintainer
+###### Original Maintainer
 
 ## Contributors
 
 ### [Arie van Luttikhuizen](https://github.com/aluttik)
 ###### Original Author
+                                                                                 
